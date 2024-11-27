@@ -1,0 +1,34 @@
+section .data
+    num dd 5                  ; Input number
+    result dd 1               ; Factorial result
+
+section .text
+global _start
+
+_start:
+    ; Initialize values
+    mov eax, [num]            ; Load input number
+    call factorial            ; Calculate factorial
+    mov [result], eax         ; Store result
+
+    ; Exit program
+    mov eax, 1
+    int 0x80
+
+factorial:
+    push ebp                  ; Preserve base pointer
+    mov ebp, esp              ; New stack frame
+    push eax                  ; Preserve input
+
+    cmp eax, 1                ; Base case: if n <= 1
+    jle end_factorial
+
+    dec eax                   ; n = n - 1
+    call factorial            ; Recursive call
+
+    pop ebx                   ; Restore n
+    mul ebx                   ; eax *= ebx
+
+end_factorial:
+    pop ebp                   ; Restore stack
+    ret
