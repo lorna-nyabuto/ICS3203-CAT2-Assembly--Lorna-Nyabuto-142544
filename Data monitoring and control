@@ -1,0 +1,32 @@
+section .data
+    sensor db 0               ; Simulated sensor value
+    motor db 0                ; Motor status
+    alarm db 0                ; Alarm status
+
+section .text
+global _start
+
+_start:
+    mov al, [sensor]          ; Read sensor value
+
+    cmp al, 10                ; High water level
+    jg trigger_alarm          ; Alarm if > 10
+
+    cmp al, 5                 ; Moderate water level
+    jg stop_motor             ; Stop motor if <= 5
+
+    ; Default: Turn on motor
+    mov [motor], 1
+    jmp end_program
+
+trigger_alarm:
+    mov [alarm], 1            ; Set alarm
+    jmp end_program
+
+stop_motor:
+    mov [motor], 0            ; Stop motor
+
+end_program:
+    ; Finalize program
+    mov eax, 1
+    int 0x80
