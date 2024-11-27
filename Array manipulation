@@ -1,0 +1,23 @@
+section .data
+    array db 1, 2, 3, 4, 5    ; Original array
+    size equ 5                ; Array size
+
+section .text
+global _start
+
+_start:
+    mov esi, array            ; Start of array
+    mov edi, array + size - 1 ; End of array
+    mov ecx, size / 2         ; Number of swaps
+
+reverse_loop:
+    mov al, [esi]             ; Load element from start
+    mov bl, [edi]             ; Load element from end
+    mov [esi], bl             ; Swap values
+    mov [edi], al
+    inc esi                   ; Move forward
+    dec edi                   ; Move backward
+    loop reverse_loop         ; Repeat until half-swapped
+
+    ; Display reversed array
+    ; Use appropriate syscalls or simulated output
