@@ -1,0 +1,48 @@
+section .data
+    msg_positive db "POSITIVE", 0
+    msg_negative db "NEGATIVE", 0
+    msg_zero db "ZERO", 0
+
+section .bss
+    input resb 1
+
+section .text
+global _start
+
+_start:
+    ; Prompt user for input
+    ; Simulate input handling (e.g., store number in `eax`)
+    
+    ; Compare the input
+    cmp eax, 0
+    je is_zero          ; Jump to ZERO case if input is 0
+    jl is_negative      ; Jump to NEGATIVE case if input < 0
+    jmp is_positive     ; Unconditional jump to POSITIVE case
+
+is_zero:
+    ; Display "ZERO"
+    mov edx, len_zero   ; Length of "ZERO"
+    mov ecx, msg_zero   ; Message to display
+    call display        ; Call display function
+    jmp end_program     ; End the program
+
+is_negative:
+    ; Display "NEGATIVE"
+    mov edx, len_negative
+    mov ecx, msg_negative
+    call display
+    jmp end_program
+
+is_positive:
+    ; Display "POSITIVE"
+    mov edx, len_positive
+    mov ecx, msg_positive
+    call display
+
+end_program:
+    mov eax, 1          ; Exit system call
+    int 0x80
+
+display:
+    ; Function to display a string
+    ; Use syscall or simulated I/O
